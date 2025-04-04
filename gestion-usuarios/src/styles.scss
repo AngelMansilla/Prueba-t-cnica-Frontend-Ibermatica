@@ -13,116 +13,56 @@
 // Importar base
 @import 'styles/base/reset';
 
-// Definir colores directamente
-$primary-color: #1976d2; // Color azul de Material Design
-$accent-color: #ff4081;  // Color rosa de Material Design
-$warn-color: #f44336;    // Color rojo de Material Design
+// Variables de colores
+$primary-color: #1976d2;
+$accent-color: #ff4081;
+$warn-color: #f44336;
+$secondary-color: #6c757d;
+$danger-color: #dc3545;
+$dark-color: #333;
+$border-color: #dee2e6;
 
-// Configuración del tema de Material
-$my-primary: mat.define-palette((
-  50: lighten($primary-color, 40%),
-  100: lighten($primary-color, 30%),
-  200: lighten($primary-color, 20%),
-  300: lighten($primary-color, 10%),
-  400: lighten($primary-color, 5%),
-  500: $primary-color,
-  600: darken($primary-color, 5%),
-  700: darken($primary-color, 10%),
-  800: darken($primary-color, 20%),
-  900: darken($primary-color, 30%),
-  contrast: (
-    50: rgba(black, 0.87),
-    100: rgba(black, 0.87),
-    200: rgba(black, 0.87),
-    300: rgba(black, 0.87),
-    400: rgba(black, 0.87),
-    500: white,
-    600: white,
-    700: white,
-    800: white,
-    900: white,
-  )
-));
+// Variables de espaciado
+$spacing-sm: 0.5rem;
+$spacing-md: 1rem;
+$spacing-lg: 1.5rem;
+$spacing-xl: 2rem;
 
-$my-accent: mat.define-palette((
-  50: lighten($accent-color, 40%),
-  100: lighten($accent-color, 30%),
-  200: lighten($accent-color, 20%),
-  300: lighten($accent-color, 10%),
-  400: lighten($accent-color, 5%),
-  500: $accent-color,
-  600: darken($accent-color, 5%),
-  700: darken($accent-color, 10%),
-  800: darken($accent-color, 20%),
-  900: darken($accent-color, 30%),
-  contrast: (
-    50: rgba(black, 0.87),
-    100: rgba(black, 0.87),
-    200: rgba(black, 0.87),
-    300: rgba(black, 0.87),
-    400: rgba(black, 0.87),
-    500: white,
-    600: white,
-    700: white,
-    800: white,
-    900: white,
-  )
-));
+// Variables de tipografía
+$font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+$font-size-base: 1rem;
+$font-size-lg: 1.25rem;
+$font-size-sm: 0.875rem;
 
-$my-warn: mat.define-palette((
-  50: lighten($warn-color, 40%),
-  100: lighten($warn-color, 30%),
-  200: lighten($warn-color, 20%),
-  300: lighten($warn-color, 10%),
-  400: lighten($warn-color, 5%),
-  500: $warn-color,
-  600: darken($warn-color, 5%),
-  700: darken($warn-color, 10%),
-  800: darken($warn-color, 20%),
-  900: darken($warn-color, 30%),
-  contrast: (
-    50: rgba(black, 0.87),
-    100: rgba(black, 0.87),
-    200: rgba(black, 0.87),
-    300: rgba(black, 0.87),
-    400: rgba(black, 0.87),
-    500: white,
-    600: white,
-    700: white,
-    800: white,
-    900: white,
-  )
-));
+// Variables de bordes
+$border-radius: 4px;
 
-// Crear y aplicar el tema
-$my-theme: mat.define-light-theme((
-  color: (
-    primary: $my-primary,
-    accent: $my-accent,
-    warn: $my-warn,
-  ),
-  typography: mat.define-typography-config(),
-  density: 0,
-));
+// Mixins
+@mixin button-variant($background) {
+  background-color: $background;
+  border: 1px solid darken($background, 5%);
+  color: white;
 
-@include mat.all-component-themes($my-theme);
+  &:hover {
+    background-color: darken($background, 7.5%);
+    border-color: darken($background, 10%);
+  }
 
-// Variables CSS globales
-:root {
-  --primary-color: #{$primary-color};
-  --accent-color: #{$accent-color};
-  --warn-color: #{$warn-color};
-
-  --surface-color: #f8f9fa;
-  --text-primary-color: #333;
-  --text-secondary-color: #666;
+  &:active {
+    background-color: darken($background, 10%);
+    border-color: darken($background, 12.5%);
+  }
 }
 
-// Estilos globales
+// Reset básico
 html, body {
   height: 100%;
   margin: 0;
+  padding: 0;
   font-family: $font-family-base;
+  font-size: $font-size-base;
+  line-height: 1.5;
+  color: $dark-color;
 }
 
 // Contenedor principal
@@ -145,7 +85,7 @@ html, body {
 
 .p-3 { padding: $spacing-md; }
 
-// Botones personalizados
+// Botones
 .btn {
   display: inline-block;
   font-weight: 400;
@@ -158,6 +98,7 @@ html, body {
   border-radius: $border-radius;
   transition: all 0.15s ease-in-out;
   cursor: pointer;
+  border: none;
 
   &:disabled {
     opacity: 0.65;
@@ -180,6 +121,12 @@ html, body {
 // Formularios
 .form-group {
   margin-bottom: $spacing-md;
+
+  label {
+    display: block;
+    margin-bottom: $spacing-sm;
+    font-weight: 500;
+  }
 }
 
 .form-control {
@@ -192,8 +139,7 @@ html, body {
   background-color: white;
   border: 1px solid $border-color;
   border-radius: $border-radius;
-  transition: border-color 0.15s ease-in-out,
-              box-shadow 0.15s ease-in-out;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 
   &:focus {
     border-color: lighten($primary-color, 25%);
@@ -206,25 +152,60 @@ html, body {
 .table {
   width: 100%;
   margin-bottom: $spacing-md;
-  color: $dark-color;
-  vertical-align: top;
-  border-color: $border-color;
+  border-collapse: collapse;
 
-  th,
-  td {
-    padding: $spacing-sm;
-    vertical-align: top;
+  th, td {
+    padding: $spacing-sm $spacing-md;
+    text-align: left;
     border-bottom: 1px solid $border-color;
   }
 
-  thead th {
-    vertical-align: bottom;
-    border-bottom: 2px solid $border-color;
+  th {
+    font-weight: 600;
+    background-color: #f8f9fa;
   }
 
   tbody tr {
     &:hover {
-      background-color: rgba(0, 0, 0, 0.075);
+      background-color: rgba(0, 0, 0, 0.04);
     }
+  }
+}
+
+// Tarjetas
+.card {
+  background-color: white;
+  border-radius: $border-radius;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: $spacing-md;
+
+  .card-header {
+    padding: $spacing-md;
+    border-bottom: 1px solid $border-color;
+    background-color: #f8f9fa;
+  }
+
+  .card-body {
+    padding: $spacing-md;
+  }
+}
+
+// Alertas
+.alert {
+  padding: $spacing-md;
+  margin-bottom: $spacing-md;
+  border: 1px solid transparent;
+  border-radius: $border-radius;
+
+  &.alert-success {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+  }
+
+  &.alert-danger {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
   }
 }

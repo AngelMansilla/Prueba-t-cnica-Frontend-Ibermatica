@@ -1,46 +1,53 @@
-<div class="user-list-container">
-  <header>
+<div class="container">
+  <header class="mb-3">
     <h1>Gestión de Usuarios</h1>
     <div class="actions">
-      <select (change)="onTipoChange($event)" class="filter-select">
+      <select (change)="onTipoChange($event)" class="form-control">
         <option value="">Todos los usuarios</option>
         <option value="DEMANDANTE">Demandantes</option>
         <option value="EMPLEADO">Empleados</option>
       </select>
-      <button (click)="onNuevoUsuario()" class="btn-primary">
+      <button (click)="onNuevoUsuario()" class="btn btn-primary">
         Nuevo Usuario
       </button>
     </div>
   </header>
 
-  <table *ngIf="usuarios$ | async as usuarios" class="users-table">
-    <thead>
-      <tr>
-        <th>NIF</th>
-        <th>Nombre</th>
-        <th>Apellidos</th>
-        <th>Tipo</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let usuario of usuarios">
-        <td>{{usuario.nif}}</td>
-        <td>{{usuario.nombre}}</td>
-        <td>{{usuario.primerApellido}} {{usuario.segundoApellido}}</td>
-        <td>{{usuario.tipo}}</td>
-        <td class="actions">
-          <button (click)="onVerUsuario(usuario)" class="btn-secondary">
-            Ver
-          </button>
-          <button (click)="onEditarUsuario(usuario)" class="btn-secondary">
-            Editar
-          </button>
-          <button (click)="onEliminarUsuario(usuario)" class="btn-danger">
-            Eliminar
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="card">
+    <div class="card-body">
+      <table *ngIf="usuarios$ | async as usuarios" class="table">
+        <thead>
+          <tr>
+            <th>NIF</th>
+            <th>Nombre</th>
+            <th>Apellidos</th>
+            <th>Tipo</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let usuario of usuarios">
+            <td>{{usuario.nif}}</td>
+            <td>{{usuario.nombre}}</td>
+            <td>{{usuario.primerApellido}} {{usuario.segundoApellido}}</td>
+            <td>{{usuario.tipo}}</td>
+            <td class="actions">
+              <button (click)="onVerUsuario(usuario)" class="btn btn-secondary">
+                Ver
+              </button>
+              <button (click)="onEditarUsuario(usuario)" class="btn btn-secondary">
+                Editar
+              </button>
+              <button (click)="onEliminarUsuario(usuario)" class="btn btn-danger">
+                Eliminar
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="usuarios.length === 0">
+            <td colspan="5" class="text-center">No hay usuarios registrados</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
