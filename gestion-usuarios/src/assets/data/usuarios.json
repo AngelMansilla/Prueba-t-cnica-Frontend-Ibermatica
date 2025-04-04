@@ -1,0 +1,52 @@
+{
+  "usuarios": [
+    {
+      "id": "1",
+      "tipo": "DEMANDANTE",
+      "nif": "12345678A",
+      "nombre": "Juan",
+      "primerApellido": "García",
+      "segundoApellido": "López",
+      "genero": "M",
+      "fechaNacimiento": "1990-01-15",
+      "direccion": {
+        "calle": "Calle Mayor",
+        "numero": "10",
+        "puerta": "2A",
+        "codigoPostal": "28001",
+        "ciudad": "Madrid"
+      },
+      "estudios": [
+        {
+          "nombreInstitucion": "Universidad Complutense",
+          "titulacion": "Ingeniería Informática",
+          "fecha": "2012-06-30"
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "tipo": "EMPLEADO",
+      "nif": "87654321B",
+      "nombre": "María",
+      "primerApellido": "Rodríguez",
+      "segundoApellido": "Martínez",
+      "genero": "F",
+      "fechaNacimiento": "1985-03-22",
+      "direccion": {
+        "calle": "Avenida Principal",
+        "numero": "45",
+        "puerta": "5B",
+        "codigoPostal": "28002",
+        "ciudad": "Madrid"
+      },
+      "experienciaLaboral": [
+        {
+          "nombreEmpresa": "Tech Solutions",
+          "puestoTrabajo": "Desarrollador Senior",
+          "fecha": "2015-01-01"
+        }
+      ]
+    }
+  ]
+}
