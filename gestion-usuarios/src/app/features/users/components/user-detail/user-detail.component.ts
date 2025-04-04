@@ -15,6 +15,8 @@ import { TabComponent } from '@shared/components/tabs/tab.component';
 })
 export class UserDetailComponent implements OnInit {
   usuario?: Usuario;
+  loading = false;
+  error?: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -23,6 +25,7 @@ export class UserDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.loading = true;
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.usuarioService.getUsuario(id).subscribe({
@@ -30,15 +33,25 @@ export class UserDetailComponent implements OnInit {
           if (usuario) {
             this.usuario = usuario;
           } else {
-            this.router.navigate(['/users']);
+            this.error = 'Usuario no encontrado';
           }
+          this.loading = false;
         },
-        error: () => this.router.navigate(['/users'])
+        error: (err) => {
+          this.error = 'Error al cargar el usuario';
+          this.loading = false;
+        }
       });
     }
   }
 
-  onVolver(): void {
+  onEdit(): void {
+    if (this.usuario) {
+      this.router.navigate(['/users/edit', this.usuario.id]);
+    }
+  }
+
+  onBack(): void {
     this.router.navigate(['/users']);
   }
 }

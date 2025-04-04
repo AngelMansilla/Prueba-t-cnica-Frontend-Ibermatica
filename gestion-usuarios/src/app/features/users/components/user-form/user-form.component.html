@@ -35,7 +35,7 @@
 
         <div class="form-group">
           <label for="tipo">Tipo de Usuario *</label>
-          <select id="tipo" formControlName="tipo">
+          <select id="tipo" formControlName="tipo" (change)="onTipoChange()">
             <option value="DEMANDANTE">Demandante</option>
             <option value="EMPLEADO">Empleado</option>
           </select>
@@ -67,6 +67,48 @@
             <label for="ciudad">Ciudad</label>
             <input id="ciudad" type="text" formControlName="ciudad">
           </div>
+        </div>
+      </app-tab>
+
+      <app-tab [title]="userForm.get('tipo')?.value === 'DEMANDANTE' ? 'Estudios' : 'Experiencia Laboral'" *ngIf="userForm.get('tipo')?.value">
+        <div *ngIf="userForm.get('tipo')?.value === 'DEMANDANTE'" formArrayName="estudios">
+          <div *ngFor="let estudio of estudiosArray.controls; let i = index" [formGroupName]="i" class="form-group">
+            <h3>Estudio {{i + 1}}</h3>
+            <div class="form-group">
+              <label [for]="'nombreInstitucion' + i">Institución</label>
+              <input [id]="'nombreInstitucion' + i" type="text" formControlName="nombreInstitucion">
+            </div>
+            <div class="form-group">
+              <label [for]="'titulacion' + i">Titulación</label>
+              <input [id]="'titulacion' + i" type="text" formControlName="titulacion">
+            </div>
+            <div class="form-group">
+              <label [for]="'fecha' + i">Fecha</label>
+              <input [id]="'fecha' + i" type="date" formControlName="fecha">
+            </div>
+            <button type="button" class="btn-danger" (click)="eliminarEstudio(i)">Eliminar</button>
+          </div>
+          <button type="button" class="btn-secondary" (click)="agregarEstudio()">Añadir Estudio</button>
+        </div>
+
+        <div *ngIf="userForm.get('tipo')?.value === 'EMPLEADO'" formArrayName="experienciaLaboral">
+          <div *ngFor="let experiencia of experienciaArray.controls; let i = index" [formGroupName]="i" class="form-group">
+            <h3>Experiencia {{i + 1}}</h3>
+            <div class="form-group">
+              <label [for]="'nombreEmpresa' + i">Empresa</label>
+              <input [id]="'nombreEmpresa' + i" type="text" formControlName="nombreEmpresa">
+            </div>
+            <div class="form-group">
+              <label [for]="'puestoTrabajo' + i">Puesto</label>
+              <input [id]="'puestoTrabajo' + i" type="text" formControlName="puestoTrabajo">
+            </div>
+            <div class="form-group">
+              <label [for]="'fecha' + i">Fecha</label>
+              <input [id]="'fecha' + i" type="date" formControlName="fecha">
+            </div>
+            <button type="button" class="btn-danger" (click)="eliminarExperiencia(i)">Eliminar</button>
+          </div>
+          <button type="button" class="btn-secondary" (click)="agregarExperiencia()">Añadir Experiencia</button>
         </div>
       </app-tab>
     </app-tabs>

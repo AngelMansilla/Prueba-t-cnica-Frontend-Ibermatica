@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Usuario, TipoUsuario } from '@core/models';
 import { UsuarioService } from '@core/services/usuario.service';
@@ -22,7 +22,7 @@ import { TabComponent } from '@shared/components/tabs/tab.component';
 export class UserFormComponent implements OnInit {
   userForm: FormGroup;
   editMode = false;
-  userId?: string;
+  userId: string | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -44,21 +44,91 @@ export class UserFormComponent implements OnInit {
         puerta: [''],
         codigoPostal: [''],
         ciudad: ['']
-      })
+      }),
+      estudios: this.fb.array([]),
+      experienciaLaboral: this.fb.array([])
     });
   }
 
   ngOnInit(): void {
-    this.userId = this.route.snapshot.paramMap.get('id') || undefined;
+    this.userId = this.route.snapshot.paramMap.get('id');
     if (this.userId) {
       this.editMode = true;
       this.usuarioService.getUsuario(this.userId).subscribe({
         next: (usuario) => {
           if (usuario) {
             this.userForm.patchValue(usuario);
+            this.loadArrays(usuario);
           }
         },
         error: () => this.router.navigate(['/users'])
+      });
+    }
+  }
+
+  get estudiosArray() {
+    return this.userForm.get('estudios') as FormArray;
+  }
+
+  get experienciaArray() {
+    return this.userForm.get('experienciaLaboral') as FormArray;
+  }
+
+  onTipoChange() {
+    const tipo = this.userForm.get('tipo')?.value;
+    // Limpiar los arrays existentes
+    while (this.estudiosArray.length) {
+      this.estudiosArray.removeAt(0);
+    }
+    while (this.experienciaArray.length) {
+      this.experienciaArray.removeAt(0);
+    }
+  }
+
+  createEstudioFormGroup() {
+    return this.fb.group({
+      nombreInstitucion: ['', Validators.required],
+      titulacion: ['', Validators.required],
+      fecha: ['', Validators.required]
+    });
+  }
+
+  createExperienciaFormGroup() {
+    return this.fb.group({
+      nombreEmpresa: ['', Validators.required],
+      puestoTrabajo: ['', Validators.required],
+      fecha: ['', Validators.required]
+    });
+  }
+
+  agregarEstudio() {
+    this.estudiosArray.push(this.createEstudioFormGroup());
+  }
+
+  agregarExperiencia() {
+    this.experienciaArray.push(this.createExperienciaFormGroup());
+  }
+
+  eliminarEstudio(index: number) {
+    this.estudiosArray.removeAt(index);
+  }
+
+  eliminarExperiencia(index: number) {
+    this.experienciaArray.removeAt(index);
+  }
+
+  loadArrays(user: Usuario) {
+    if (user.tipo === 'DEMANDANTE' && user.estudios) {
+      user.estudios.forEach(estudio => {
+        const estudioGroup = this.createEstudioFormGroup();
+        estudioGroup.patchValue(estudio);
+        this.estudiosArray.push(estudioGroup);
+      });
+    } else if (user.tipo === 'EMPLEADO' && user.experienciaLaboral) {
+      user.experienciaLaboral.forEach(experiencia => {
+        const experienciaGroup = this.createExperienciaFormGroup();
+        experienciaGroup.patchValue(experiencia);
+        this.experienciaArray.push(experienciaGroup);
       });
     }
   }

@@ -1,21 +1,19 @@
 <div class="user-detail-container">
   <div *ngIf="loading" class="loading-state">
-    <mat-spinner diameter="40"></mat-spinner>
     <p>Cargando información del usuario...</p>
   </div>
 
   <div *ngIf="error" class="error-state">
-    <mat-icon color="warn">error</mat-icon>
     <p>{{ error }}</p>
-    <button mat-button (click)="onBack()">Volver al listado</button>
+    <button (click)="onBack()">Volver al listado</button>
   </div>
 
   <div *ngIf="!loading && !error && usuario">
     <header>
       <h1>Detalle del Usuario</h1>
       <div class="actions">
-        <button mat-raised-button color="primary" (click)="onEdit()">Editar</button>
-        <button mat-button (click)="onBack()">Volver</button>
+        <button (click)="onEdit()">Editar</button>
+        <button (click)="onBack()">Volver</button>
       </div>
     </header>
 
@@ -41,14 +39,6 @@
               <span>{{ usuario.segundoApellido || '-' }}</span>
             </div>
             <div class="info-item">
-              <label>Género:</label>
-              <span>{{ usuario.genero || '-' }}</span>
-            </div>
-            <div class="info-item">
-              <label>Fecha de Nacimiento:</label>
-              <span>{{ usuario.fechaNacimiento | date:'dd/MM/yyyy' || '-' }}</span>
-            </div>
-            <div class="info-item">
               <label>Tipo de usuario:</label>
               <span>{{ usuario.tipo }}</span>
             </div>
@@ -62,51 +52,52 @@
           <div class="info-grid">
             <div class="info-item">
               <label>Calle:</label>
-              <span>{{ usuario.direccion.calle }}</span>
+              <span>{{ usuario.direccion.calle || '-' }}</span>
             </div>
             <div class="info-item">
               <label>Número:</label>
-              <span>{{ usuario.direccion.numero }}</span>
+              <span>{{ usuario.direccion.numero || '-' }}</span>
             </div>
             <div class="info-item">
               <label>Puerta:</label>
-              <span>{{ usuario.direccion.puerta }}</span>
+              <span>{{ usuario.direccion.puerta || '-' }}</span>
             </div>
             <div class="info-item">
               <label>Código Postal:</label>
-              <span>{{ usuario.direccion.codigoPostal }}</span>
+              <span>{{ usuario.direccion.codigoPostal || '-' }}</span>
             </div>
             <div class="info-item">
               <label>Ciudad:</label>
-              <span>{{ usuario.direccion.ciudad }}</span>
+              <span>{{ usuario.direccion.ciudad || '-' }}</span>
             </div>
           </div>
         </div>
       </app-tab>
 
-      <app-tab title="Información Adicional" *ngIf="usuario.tipo === 'DEMANDANTE'">
-        <div class="info-section">
+      <app-tab [title]="usuario.tipo === 'DEMANDANTE' ? 'Estudios' : 'Experiencia Laboral'">
+        <div class="info-section" *ngIf="usuario.tipo === 'DEMANDANTE'">
           <h3>Estudios</h3>
           <div class="list-section" *ngIf="usuario.estudios && usuario.estudios.length > 0">
             <div class="list-item" *ngFor="let estudio of usuario.estudios">
-              <h4>{{ estudio.titulo }}</h4>
-              <p>{{ estudio.centro }} ({{ estudio.fechaInicio | date:'dd/MM/yyyy' }} - {{ estudio.fechaFin | date:'dd/MM/yyyy' }})</p>
+              <h4>{{ estudio.titulacion }}</h4>
+              <p>{{ estudio.nombreInstitucion }}</p>
+              <p>Fecha: {{ estudio.fecha | date:'dd/MM/yyyy' }}</p>
             </div>
           </div>
-
           <div *ngIf="!usuario.estudios || usuario.estudios.length === 0" class="empty-state">
             <p>No hay estudios registrados</p>
           </div>
+        </div>
 
+        <div class="info-section" *ngIf="usuario.tipo === 'EMPLEADO'">
           <h3>Experiencia Laboral</h3>
           <div class="list-section" *ngIf="usuario.experienciaLaboral && usuario.experienciaLaboral.length > 0">
             <div class="list-item" *ngFor="let exp of usuario.experienciaLaboral">
-              <h4>{{ exp.puesto }}</h4>
-              <p>{{ exp.empresa }} ({{ exp.fechaInicio | date:'dd/MM/yyyy' }} - {{ exp.fechaFin | date:'dd/MM/yyyy' }})</p>
-              <p>{{ exp.descripcion }}</p>
+              <h4>{{ exp.puestoTrabajo }}</h4>
+              <p>{{ exp.nombreEmpresa }}</p>
+              <p>Fecha: {{ exp.fecha | date:'dd/MM/yyyy' }}</p>
             </div>
           </div>
-
           <div *ngIf="!usuario.experienciaLaboral || usuario.experienciaLaboral.length === 0" class="empty-state">
             <p>No hay experiencia laboral registrada</p>
           </div>

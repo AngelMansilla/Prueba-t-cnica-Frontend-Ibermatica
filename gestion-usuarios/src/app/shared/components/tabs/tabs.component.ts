@@ -9,9 +9,10 @@ import { TabComponent } from './tab.component';
       <div class="tabs-header">
         <button
           *ngFor="let tab of tabs"
+          type="button"
           class="tab-button"
           [class.active]="tab.active"
-          (click)="selectTab(tab)">
+          (click)="selectTab(tab, $event)">
           {{ tab.title }}
         </button>
       </div>
@@ -39,6 +40,10 @@ import { TabComponent } from './tab.component';
       color: #666;
       border-bottom: 2px solid transparent;
       margin-bottom: -1px;
+      transition: all 0.2s ease;
+    }
+    .tab-button:hover {
+      color: #1976d2;
     }
     .tab-button.active {
       color: #1976d2;
@@ -56,12 +61,16 @@ export class TabsComponent {
 
   ngAfterContentInit() {
     const activeTabs = this.tabs.filter(tab => tab.active);
-    if (activeTabs.length === 0) {
+    if (activeTabs.length === 0 && this.tabs.first) {
       this.selectTab(this.tabs.first);
     }
   }
 
-  selectTab(tab: TabComponent) {
+  selectTab(tab: TabComponent, event?: MouseEvent) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
     this.tabs.forEach(tab => tab.active = false);
     tab.active = true;
   }
