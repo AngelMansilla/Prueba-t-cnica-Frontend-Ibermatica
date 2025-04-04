@@ -1,0 +1,56 @@
+@import 'styles/abstracts/variables';
+@import 'styles/abstracts/mixins';
+
+.user-list-container {
+  padding: $spacing-md;
+}
+
+header {
+  @include flex(row, space-between, center);
+  margin-bottom: $spacing-xl;
+}
+
+.actions {
+  @include flex(row);
+  gap: $spacing-md;
+}
+
+.filter-select {
+  padding: $spacing-sm;
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
+}
+
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: $spacing-md;
+
+  th, td {
+    padding: $spacing-md;
+    text-align: left;
+    border-bottom: 1px solid $border-color;
+  }
+
+  th {
+    background-color: $light-color;
+    font-weight: bold;
+  }
+
+  td.actions {
+    white-space: nowrap;
+  }
+}
+
+.btn-primary {
+  @include button-variant($primary-color);
+}
+
+.btn-secondary {
+  @include button-variant($secondary-color);
+  margin-right: $spacing-sm;
+}
+
+.btn-danger {
+  @include button-variant($danger-color);
+}

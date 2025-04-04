@@ -1,0 +1,119 @@
+:host {
+  display: block;
+}
+
+.user-detail-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+
+  h1 {
+    margin: 0;
+    color: var(--primary-color);
+  }
+}
+
+.loading-state,
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  text-align: center;
+
+  p {
+    margin: 20px 0;
+    color: #666;
+  }
+}
+
+.error-state {
+  mat-icon {
+    font-size: 48px;
+    height: 48px;
+    width: 48px;
+  }
+}
+
+.info-section {
+  margin-bottom: 30px;
+
+  h3 {
+    color: #333;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #eee;
+  }
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.info-item {
+  padding: 15px;
+  background-color: var(--surface-color, #f8f9fa);
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+
+  label {
+    display: block;
+    color: var(--text-secondary-color, #666);
+    font-size: 0.9em;
+    margin-bottom: 5px;
+  }
+
+  span {
+    font-size: 1.1em;
+    color: var(--text-primary-color, #333);
+  }
+}
+
+.list-section {
+  .list-item {
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: var(--surface-color, #f8f9fa);
+    border-radius: 4px;
+    border-left: 4px solid var(--primary-color, #007bff);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+
+    h4 {
+      margin: 0 0 10px 0;
+      color: var(--text-primary-color, #333);
+    }
+
+    p {
+      margin: 5px 0;
+      color: var(--text-secondary-color, #666);
+    }
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 20px;
+  background-color: var(--surface-color, #f8f9fa);
+  border-radius: 4px;
+  margin: 20px 0;
+  color: var(--text-secondary-color, #666);
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-secondary {
+  @include button-variant($secondary-color);
+}

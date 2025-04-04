@@ -1,0 +1,62 @@
+<div class="user-form-container">
+  <h1>{{ isEditing ? 'Editar Usuario' : 'Nuevo Usuario' }}</h1>
+
+  <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+    <app-tabs>
+      <app-tab title="Datos Personales">
+        <div class="form-group">
+          <label for="nif">NIF *</label>
+          <input id="nif" type="text" formControlName="nif">
+          <div *ngIf="userForm.get('nif')?.errors?.['required'] && userForm.get('nif')?.touched" class="error-message">
+            El NIF es requerido
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="nombre">Nombre *</label>
+          <input id="nombre" type="text" formControlName="nombre">
+          <div *ngIf="userForm.get('nombre')?.errors?.['required'] && userForm.get('nombre')?.touched" class="error-message">
+            El nombre es requerido
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="primerApellido">Primer Apellido *</label>
+          <input id="primerApellido" type="text" formControlName="primerApellido">
+          <div *ngIf="userForm.get('primerApellido')?.errors?.['required'] && userForm.get('primerApellido')?.touched" class="error-message">
+            El primer apellido es requerido
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="segundoApellido">Segundo Apellido</label>
+          <input id="segundoApellido" type="text" formControlName="segundoApellido">
+        </div>
+
+        <div class="form-group">
+          <label for="tipo">Tipo de Usuario *</label>
+          <select id="tipo" formControlName="tipo">
+            <option value="DEMANDANTE">Demandante</option>
+            <option value="EMPLEADO">Empleado</option>
+          </select>
+          <div *ngIf="userForm.get('tipo')?.errors?.['required'] && userForm.get('tipo')?.touched" class="error-message">
+            El tipo de usuario es requerido
+          </div>
+        </div>
+      </app-tab>
+
+      <app-tab title="Dirección">
+        <app-address-form formGroupName="direccion"></app-address-form>
+      </app-tab>
+    </app-tabs>
+
+    <div class="form-actions">
+      <button type="button" (click)="onCancel()" class="btn-secondary">
+        Cancelar
+      </button>
+      <button type="submit" [disabled]="userForm.invalid" class="btn-primary">
+        {{ isEditing ? 'Guardar Cambios' : 'Crear Usuario' }}
+      </button>
+    </div>
+  </form>
+</div>

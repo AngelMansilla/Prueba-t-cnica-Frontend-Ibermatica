@@ -1,0 +1,27 @@
+@import 'styles/abstracts/variables';
+@import 'styles/abstracts/mixins';
+
+:host {
+  display: block;
+  padding: $spacing-md;
+}
+
+mat-dialog-content {
+  margin: $spacing-lg 0;
+  color: $dark-color;
+
+  p {
+    margin-bottom: $spacing-sm;
+
+    &:last-child {
+      color: $secondary-color;
+      font-size: $font-size-sm;
+    }
+  }
+}
+
+mat-dialog-actions {
+  padding: $spacing-lg 0;
+  @include flex(row, flex-end);
+  gap: $spacing-md;
+}

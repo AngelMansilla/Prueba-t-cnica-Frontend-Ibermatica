@@ -1,0 +1,37 @@
+// Colores
+$primary-color: #3f51b5;    // Indigo
+$secondary-color: #6c757d;
+$accent-color: #ff4081;     // Pink
+$danger-color: #dc3545;
+$success-color: #28a745;
+$warning-color: #ffc107;
+$info-color: #17a2b8;
+$light-color: #f8f9fa;
+$dark-color: #343a40;
+$border-color: #dee2e6;
+
+// Tipografía
+$font-family-base: Roboto, "Helvetica Neue", sans-serif;
+$font-size-base: 1rem;
+$font-size-lg: 1.25rem;
+$font-size-sm: 0.875rem;
+
+// Espaciado
+$spacing-unit: 1rem;
+$spacing-xs: $spacing-unit * 0.25;
+$spacing-sm: 0.5rem;
+$spacing-md: 1rem;
+$spacing-lg: 1.5rem;
+$spacing-xl: 2rem;
+
+// Bordes
+$border-radius: 4px;
+
+// Sombras
+$box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+// Breakpoints
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;

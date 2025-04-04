@@ -1,0 +1,9 @@
+<h2 mat-dialog-title>Confirmar Eliminación</h2>
+<mat-dialog-content>
+  <p>¿Está seguro de que desea eliminar al usuario {{data.usuario.nombre}} {{data.usuario.primerApellido}}?</p>
+  <p>Esta acción no se puede deshacer.</p>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancelar</button>
+  <button mat-raised-button color="warn" (click)="onConfirm()">Eliminar</button>
+</mat-dialog-actions>

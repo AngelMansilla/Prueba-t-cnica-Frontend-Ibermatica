@@ -1,0 +1,230 @@
+/* You can add global styles to this file, and also import other style files */
+
+// Importar tema de Angular Material
+@use '@angular/material' as mat;
+
+// Incluir los estilos base de Material
+@include mat.core();
+
+// Importar abstracts
+@import 'styles/abstracts/variables';
+@import 'styles/abstracts/mixins';
+
+// Importar base
+@import 'styles/base/reset';
+
+// Definir colores directamente
+$primary-color: #1976d2; // Color azul de Material Design
+$accent-color: #ff4081;  // Color rosa de Material Design
+$warn-color: #f44336;    // Color rojo de Material Design
+
+// Configuración del tema de Material
+$my-primary: mat.define-palette((
+  50: lighten($primary-color, 40%),
+  100: lighten($primary-color, 30%),
+  200: lighten($primary-color, 20%),
+  300: lighten($primary-color, 10%),
+  400: lighten($primary-color, 5%),
+  500: $primary-color,
+  600: darken($primary-color, 5%),
+  700: darken($primary-color, 10%),
+  800: darken($primary-color, 20%),
+  900: darken($primary-color, 30%),
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: rgba(black, 0.87),
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+  )
+));
+
+$my-accent: mat.define-palette((
+  50: lighten($accent-color, 40%),
+  100: lighten($accent-color, 30%),
+  200: lighten($accent-color, 20%),
+  300: lighten($accent-color, 10%),
+  400: lighten($accent-color, 5%),
+  500: $accent-color,
+  600: darken($accent-color, 5%),
+  700: darken($accent-color, 10%),
+  800: darken($accent-color, 20%),
+  900: darken($accent-color, 30%),
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: rgba(black, 0.87),
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+  )
+));
+
+$my-warn: mat.define-palette((
+  50: lighten($warn-color, 40%),
+  100: lighten($warn-color, 30%),
+  200: lighten($warn-color, 20%),
+  300: lighten($warn-color, 10%),
+  400: lighten($warn-color, 5%),
+  500: $warn-color,
+  600: darken($warn-color, 5%),
+  700: darken($warn-color, 10%),
+  800: darken($warn-color, 20%),
+  900: darken($warn-color, 30%),
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: rgba(black, 0.87),
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+  )
+));
+
+// Crear y aplicar el tema
+$my-theme: mat.define-light-theme((
+  color: (
+    primary: $my-primary,
+    accent: $my-accent,
+    warn: $my-warn,
+  ),
+  typography: mat.define-typography-config(),
+  density: 0,
+));
+
+@include mat.all-component-themes($my-theme);
+
+// Variables CSS globales
+:root {
+  --primary-color: #{$primary-color};
+  --accent-color: #{$accent-color};
+  --warn-color: #{$warn-color};
+
+  --surface-color: #f8f9fa;
+  --text-primary-color: #333;
+  --text-secondary-color: #666;
+}
+
+// Estilos globales
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: $font-family-base;
+}
+
+// Contenedor principal
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 $spacing-md;
+}
+
+// Utilidades de espaciado
+.mt-1 { margin-top: $spacing-sm; }
+.mt-2 { margin-top: $spacing-md; }
+.mt-3 { margin-top: $spacing-lg; }
+.mt-4 { margin-top: $spacing-xl; }
+
+.mb-1 { margin-bottom: $spacing-sm; }
+.mb-2 { margin-bottom: $spacing-md; }
+.mb-3 { margin-bottom: $spacing-lg; }
+.mb-4 { margin-bottom: $spacing-xl; }
+
+.p-3 { padding: $spacing-md; }
+
+// Botones personalizados
+.btn {
+  display: inline-block;
+  font-weight: 400;
+  text-align: center;
+  vertical-align: middle;
+  user-select: none;
+  padding: $spacing-sm $spacing-md;
+  font-size: $font-size-base;
+  line-height: 1.5;
+  border-radius: $border-radius;
+  transition: all 0.15s ease-in-out;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.65;
+    pointer-events: none;
+  }
+}
+
+.btn-primary {
+  @include button-variant($primary-color);
+}
+
+.btn-secondary {
+  @include button-variant($secondary-color);
+}
+
+.btn-danger {
+  @include button-variant($danger-color);
+}
+
+// Formularios
+.form-group {
+  margin-bottom: $spacing-md;
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  padding: $spacing-sm;
+  font-size: $font-size-base;
+  line-height: 1.5;
+  color: $dark-color;
+  background-color: white;
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
+  transition: border-color 0.15s ease-in-out,
+              box-shadow 0.15s ease-in-out;
+
+  &:focus {
+    border-color: lighten($primary-color, 25%);
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba($primary-color, 0.25);
+  }
+}
+
+// Tablas
+.table {
+  width: 100%;
+  margin-bottom: $spacing-md;
+  color: $dark-color;
+  vertical-align: top;
+  border-color: $border-color;
+
+  th,
+  td {
+    padding: $spacing-sm;
+    vertical-align: top;
+    border-bottom: 1px solid $border-color;
+  }
+
+  thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid $border-color;
+  }
+
+  tbody tr {
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.075);
+    }
+  }
+}
