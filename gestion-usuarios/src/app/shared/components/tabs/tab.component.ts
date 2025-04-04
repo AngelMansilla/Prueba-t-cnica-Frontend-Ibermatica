@@ -1,22 +1,22 @@
 import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-tab',
   template: `
-    <div [class.active]="active" class="tab-pane">
+    <div [class.hidden]="!active">
       <ng-content></ng-content>
     </div>
   `,
   styles: [`
-    .tab-pane {
+    .hidden {
       display: none;
     }
-    .tab-pane.active {
-      display: block;
-    }
-  `]
+  `],
+  standalone: true,
+  imports: [CommonModule]
 })
 export class TabComponent {
-  @Input() title!: string;
-  @Input() active = false;
+  @Input() title: string = '';
+  active = false;
 }

@@ -1,57 +1,44 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule, DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Usuario } from '@core/models';
 import { UsuarioService } from '@core/services/usuario.service';
+import { TabsComponent } from '@shared/components/tabs/tabs.component';
+import { TabComponent } from '@shared/components/tabs/tab.component';
 
 @Component({
   selector: 'app-user-detail',
   templateUrl: './user-detail.component.html',
-  styleUrls: ['./user-detail.component.scss']
+  styleUrls: ['./user-detail.component.scss'],
+  standalone: true,
+  imports: [CommonModule, DatePipe, TabsComponent, TabComponent]
 })
 export class UserDetailComponent implements OnInit {
-  usuario: Usuario | null = null;
-  error: string | null = null;
-  loading = true;
+  usuario?: Usuario;
 
   constructor(
-    private usuarioService: UsuarioService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private usuarioService: UsuarioService
   ) {}
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.cargarUsuario(id);
-    } else {
-      this.router.navigate(['/users']);
+      this.usuarioService.getUsuario(id).subscribe({
+        next: (usuario) => {
+          if (usuario) {
+            this.usuario = usuario;
+          } else {
+            this.router.navigate(['/users']);
+          }
+        },
+        error: () => this.router.navigate(['/users'])
+      });
     }
   }
 
-  private cargarUsuario(id: string): void {
-    this.loading = true;
-    this.error = null;
-
-    this.usuarioService.getUsuario(id).subscribe({
-      next: (usuario) => {
-        this.usuario = usuario;
-        this.loading = false;
-      },
-      error: (error) => {
-        console.error('Error al cargar usuario:', error);
-        this.error = 'No se pudo cargar el usuario. Por favor, inténtelo de nuevo.';
-        this.loading = false;
-      }
-    });
-  }
-
-  onEdit(): void {
-    if (this.usuario) {
-      this.router.navigate(['/users/edit', this.usuario.id]);
-    }
-  }
-
-  onBack(): void {
+  onVolver(): void {
     this.router.navigate(['/users']);
   }
 }

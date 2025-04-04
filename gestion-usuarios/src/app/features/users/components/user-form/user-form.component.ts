@@ -1,18 +1,28 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Usuario, TipoUsuario, CrearUsuarioDTO, ActualizarUsuarioDTO } from '@core/models';
+import { Usuario, TipoUsuario } from '@core/models';
 import { UsuarioService } from '@core/services/usuario.service';
+import { TabsComponent } from '@shared/components/tabs/tabs.component';
+import { TabComponent } from '@shared/components/tabs/tab.component';
 
 @Component({
   selector: 'app-user-form',
   templateUrl: './user-form.component.html',
-  styleUrls: ['./user-form.component.scss']
+  styleUrls: ['./user-form.component.scss'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    TabsComponent,
+    TabComponent
+  ]
 })
 export class UserFormComponent implements OnInit {
   userForm: FormGroup;
-  isEditing = false;
-  userId: string | null = null;
+  editMode = false;
+  userId?: string;
 
   constructor(
     private fb: FormBuilder,
@@ -21,73 +31,51 @@ export class UserFormComponent implements OnInit {
     private route: ActivatedRoute
   ) {
     this.userForm = this.fb.group({
-      nif: ['', Validators.required],
+      nif: ['', [Validators.required, Validators.pattern(/^[0-9]{8}[A-Z]$/)]],
       nombre: ['', Validators.required],
       primerApellido: ['', Validators.required],
       segundoApellido: [''],
       tipo: ['DEMANDANTE', Validators.required],
+      genero: [''],
+      fechaNacimiento: [''],
       direccion: this.fb.group({
-        calle: ['', Validators.required],
-        numero: ['', Validators.required],
+        calle: [''],
+        numero: [''],
         puerta: [''],
-        codigoPostal: ['', [Validators.required, Validators.pattern('^[0-9]{5}$')]],
-        ciudad: ['', Validators.required]
+        codigoPostal: [''],
+        ciudad: ['']
       })
     });
   }
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.isEditing = true;
-      this.userId = id;
-      this.cargarUsuario(id);
+    this.userId = this.route.snapshot.paramMap.get('id') || undefined;
+    if (this.userId) {
+      this.editMode = true;
+      this.usuarioService.getUsuario(this.userId).subscribe({
+        next: (usuario) => {
+          if (usuario) {
+            this.userForm.patchValue(usuario);
+          }
+        },
+        error: () => this.router.navigate(['/users'])
+      });
     }
-  }
-
-  cargarUsuario(id: string): void {
-    this.usuarioService.getUsuario(id).subscribe({
-      next: (usuario) => {
-        if (usuario) {
-          this.userForm.patchValue(usuario);
-        } else {
-          this.router.navigate(['/users']);
-        }
-      },
-      error: (error) => {
-        console.error('Error al cargar usuario:', error);
-        this.router.navigate(['/users']);
-      }
-    });
   }
 
   onSubmit(): void {
     if (this.userForm.valid) {
       const userData = this.userForm.value;
 
-      if (this.isEditing && this.userId) {
-        const updateDto: ActualizarUsuarioDTO = {
-          ...userData
-        };
-
-        this.usuarioService.actualizarUsuario(this.userId, updateDto).subscribe({
+      if (this.editMode && this.userId) {
+        this.usuarioService.actualizarUsuario(this.userId, userData).subscribe({
           next: () => this.router.navigate(['/users']),
-          error: (error) => {
-            console.error('Error al actualizar usuario:', error);
-            alert('Error al actualizar el usuario');
-          }
+          error: (error) => console.error('Error al actualizar usuario:', error)
         });
       } else {
-        const createDto: CrearUsuarioDTO = {
-          ...userData
-        };
-
-        this.usuarioService.crearUsuario(createDto).subscribe({
+        this.usuarioService.crearUsuario(userData).subscribe({
           next: () => this.router.navigate(['/users']),
-          error: (error) => {
-            console.error('Error al crear usuario:', error);
-            alert('Error al crear el usuario');
-          }
+          error: (error) => console.error('Error al crear usuario:', error)
         });
       }
     }

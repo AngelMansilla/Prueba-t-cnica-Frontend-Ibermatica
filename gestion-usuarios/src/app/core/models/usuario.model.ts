@@ -20,13 +20,13 @@ export interface UsuarioBase {
 // Interface específica para Demandantes
 export interface Demandante extends UsuarioBase {
   tipo: 'DEMANDANTE';
-  estudios: Estudio[];
+  estudios?: Estudio[];
 }
 
 // Interface específica para Empleados
 export interface Empleado extends UsuarioBase {
   tipo: 'EMPLEADO';
-  experienciaLaboral: ExperienciaLaboral[];
+  experienciaLaboral?: ExperienciaLaboral[];
 }
 
 // Tipo unión para cualquier tipo de usuario

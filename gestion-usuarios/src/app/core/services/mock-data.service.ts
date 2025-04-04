@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, map, of, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, firstValueFrom, of } from 'rxjs';
 import { Usuario, CrearUsuarioDTO, ActualizarUsuarioDTO } from '../models';
 
 interface DataResponse {
@@ -11,48 +11,41 @@ interface DataResponse {
   providedIn: 'root'
 })
 export class MockDataService {
-  // Almacena los datos de los usuarios
-  private usuarios = new BehaviorSubject<Usuario[]>([]);
-  // Indica si los datos se han cargado
-  private dataLoaded = false;
-
-  // Inyecta el servicio HttpClient
-  constructor(private http: HttpClient) {
-    this.cargarDatos();
-  }
-
-  // Cargar datos de usuarios desde el archivo JSON
-  private cargarDatos(): void {
-    if (!this.dataLoaded) {
-      this.http.get<DataResponse>('assets/data/usuarios.json')
-        .subscribe({
-          next: (data) => {
-            this.usuarios.next(data.usuarios);
-            this.dataLoaded = true;
-          },
-          error: (error) => {
-            console.error('Error al cargar usuarios:', error);
-            // Si hay error, inicializar con array vacío
-            this.usuarios.next([]);
-            this.dataLoaded = true;
-          }
-        });
+  private usuarios = new BehaviorSubject<Usuario[]>([
+    {
+      id: "1",
+      tipo: "DEMANDANTE",
+      nif: "12345678A",
+      nombre: "Juan",
+      primerApellido: "García",
+      segundoApellido: "López",
+      genero: "M",
+      fechaNacimiento: "1990-01-15"
+    },
+    {
+      id: "2",
+      tipo: "EMPLEADO",
+      nif: "87654321B",
+      nombre: "María",
+      primerApellido: "Rodríguez",
+      segundoApellido: "Martínez",
+      genero: "F",
+      fechaNacimiento: "1985-03-22"
     }
-  }
+  ]);
+
+  constructor(private http: HttpClient) {}
 
   // Obtener todos los usuarios
   getUsuarios(): Observable<Usuario[]> {
-    if (!this.dataLoaded) {
-      this.cargarDatos();
-    }
     return this.usuarios.asObservable();
   }
 
   // Obtener usuario por ID
   getUsuarioPorId(id: string): Observable<Usuario | undefined> {
-    return this.usuarios.pipe(
-      map(usuarios => usuarios.find(u => u.id === id))
-    );
+    const usuarios = this.usuarios.getValue();
+    const usuario = usuarios.find(u => u.id === id);
+    return of(usuario);
   }
 
   // Crear nuevo usuario
@@ -74,7 +67,7 @@ export class MockDataService {
     const index = usuarios.findIndex(u => u.id === id);
 
     if (index === -1) {
-      return throwError(() => new Error('Usuario no encontrado'));
+      throw new Error('Usuario no encontrado');
     }
 
     const usuarioActualizado = {
@@ -94,7 +87,7 @@ export class MockDataService {
     const usuariosFiltrados = usuarios.filter(u => u.id !== id);
 
     if (usuarios.length === usuariosFiltrados.length) {
-      return throwError(() => new Error('Usuario no encontrado'));
+      throw new Error('Usuario no encontrado');
     }
 
     this.usuarios.next(usuariosFiltrados);

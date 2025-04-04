@@ -1,62 +1,68 @@
-import { Component, ContentChildren, QueryList, AfterContentInit } from '@angular/core';
+import { Component, ContentChildren, QueryList } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { TabComponent } from './tab.component';
 
 @Component({
   selector: 'app-tabs',
   template: `
     <div class="tabs">
-      <div class="tab-headers">
+      <div class="tabs-header">
         <button
           *ngFor="let tab of tabs"
+          class="tab-button"
           [class.active]="tab.active"
           (click)="selectTab(tab)">
-          {{tab.title}}
+          {{ tab.title }}
         </button>
       </div>
-      <div class="tab-content">
+      <div class="tabs-content">
         <ng-content></ng-content>
       </div>
     </div>
   `,
   styles: [`
     .tabs {
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      overflow: hidden;
+      margin: 1rem 0;
     }
-    .tab-headers {
+    .tabs-header {
       display: flex;
-      background: #f5f5f5;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
       border-bottom: 1px solid #ddd;
     }
-    button {
-      padding: 1em 2em;
+    .tab-button {
+      padding: 0.5rem 1rem;
       border: none;
       background: none;
       cursor: pointer;
+      font-size: 1rem;
+      color: #666;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
     }
-    button.active {
-      background: white;
-      border-bottom: 2px solid #007bff;
+    .tab-button.active {
+      color: #1976d2;
+      border-bottom-color: #1976d2;
     }
-    .tab-content {
-      padding: 1em;
+    .tabs-content {
+      padding: 1rem 0;
     }
-  `]
+  `],
+  standalone: true,
+  imports: [CommonModule]
 })
-export class TabsComponent implements AfterContentInit {
+export class TabsComponent {
   @ContentChildren(TabComponent) tabs!: QueryList<TabComponent>;
 
   ngAfterContentInit() {
-    // Activar la primera pestaña por defecto
     const activeTabs = this.tabs.filter(tab => tab.active);
-    if (activeTabs.length === 0 && this.tabs.first) {
+    if (activeTabs.length === 0) {
       this.selectTab(this.tabs.first);
     }
   }
 
-  selectTab(selectedTab: TabComponent) {
+  selectTab(tab: TabComponent) {
     this.tabs.forEach(tab => tab.active = false);
-    selectedTab.active = true;
+    tab.active = true;
   }
 }

@@ -1,5 +1,5 @@
 <div class="user-form-container">
-  <h1>{{ isEditing ? 'Editar Usuario' : 'Nuevo Usuario' }}</h1>
+  <h1>{{ editMode ? 'Editar Usuario' : 'Nuevo Usuario' }}</h1>
 
   <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
     <app-tabs>
@@ -46,7 +46,28 @@
       </app-tab>
 
       <app-tab title="Dirección">
-        <app-address-form formGroupName="direccion"></app-address-form>
+        <div formGroupName="direccion">
+          <div class="form-group">
+            <label for="calle">Calle</label>
+            <input id="calle" type="text" formControlName="calle">
+          </div>
+          <div class="form-group">
+            <label for="numero">Número</label>
+            <input id="numero" type="text" formControlName="numero">
+          </div>
+          <div class="form-group">
+            <label for="puerta">Puerta</label>
+            <input id="puerta" type="text" formControlName="puerta">
+          </div>
+          <div class="form-group">
+            <label for="codigoPostal">Código Postal</label>
+            <input id="codigoPostal" type="text" formControlName="codigoPostal">
+          </div>
+          <div class="form-group">
+            <label for="ciudad">Ciudad</label>
+            <input id="ciudad" type="text" formControlName="ciudad">
+          </div>
+        </div>
       </app-tab>
     </app-tabs>
 
@@ -55,7 +76,7 @@
         Cancelar
       </button>
       <button type="submit" [disabled]="userForm.invalid" class="btn-primary">
-        {{ isEditing ? 'Guardar Cambios' : 'Crear Usuario' }}
+        {{ editMode ? 'Guardar Cambios' : 'Crear Usuario' }}
       </button>
     </div>
   </form>

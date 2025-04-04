@@ -3,11 +3,14 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, combineLatest, map } from 'rxjs';
 import { Usuario, TipoUsuario } from '@core/models';
 import { UsuarioService } from '@core/services/usuario.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
-  styleUrls: ['./user-list.component.scss']
+  styleUrls: ['./user-list.component.scss'],
+  standalone: true,
+  imports: [CommonModule]
 })
 export class UserListComponent implements OnInit {
   private tipoFiltro = new BehaviorSubject<TipoUsuario | null>(null);
