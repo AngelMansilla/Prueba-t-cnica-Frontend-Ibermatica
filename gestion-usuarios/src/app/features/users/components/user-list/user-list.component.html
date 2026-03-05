@@ -32,14 +32,14 @@
             <td>{{usuario.primerApellido}} {{usuario.segundoApellido}}</td>
             <td>{{usuario.tipo}}</td>
             <td class="actions">
-              <button (click)="onVerUsuario(usuario)" class="btn btn-secondary">
-                Ver
+              <button mat-icon-button color="primary" (click)='onVerUsuario(usuario)' matTooltip="Ver detalle">
+                <mat-icon>visibility</mat-icon>
               </button>
-              <button (click)="onEditarUsuario(usuario)" class="btn btn-secondary">
-                Editar
+              <button mat-icon-button color="accent" (click)='onEditarUsuario(usuario)' matTooltip="Editar usuario">
+                <mat-icon>edit</mat-icon>
               </button>
-              <button (click)="onEliminarUsuario(usuario)" class="btn btn-danger">
-                Eliminar
+              <button mat-icon-button color="warn" (click)='onEliminarUsuario(usuario)' matTooltip="Eliminar usuario">
+                <mat-icon>delete</mat-icon>
               </button>
             </td>
           </tr>
