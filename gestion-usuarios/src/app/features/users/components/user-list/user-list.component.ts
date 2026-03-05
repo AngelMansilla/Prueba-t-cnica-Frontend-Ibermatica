@@ -4,13 +4,16 @@ import { BehaviorSubject, Observable, combineLatest, map } from 'rxjs';
 import { Usuario, TipoUsuario } from '@core/models';
 import { UsuarioService } from '@core/services/usuario.service';
 import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss'],
   standalone: true,
-  imports: [CommonModule]
+  imports: [CommonModule, MatIconModule, MatButtonModule, MatTooltipModule]
 })
 export class UserListComponent implements OnInit {
   private tipoFiltro = new BehaviorSubject<TipoUsuario | null>(null);
