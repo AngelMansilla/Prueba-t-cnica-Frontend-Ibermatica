@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { Usuario, CrearUsuarioDTO, ActualizarUsuarioDTO, TipoUsuario } from '../models';
 import { MockDataService } from './mock-data.service';
 
@@ -7,7 +7,7 @@ import { MockDataService } from './mock-data.service';
   providedIn: 'root'
 })
 export class UsuarioService {
-  constructor(private mockDataService: MockDataService) {}
+  constructor(private mockDataService: MockDataService) { }
 
   // Obtener todos los usuarios
   getUsuarios(): Observable<Usuario[]> {
@@ -16,7 +16,9 @@ export class UsuarioService {
 
   // Obtener usuarios filtrados por tipo
   getUsuariosPorTipo(tipo: TipoUsuario): Observable<Usuario[]> {
-    return this.mockDataService.getUsuarios();
+    return this.getUsuarios().pipe(
+      map(usuarios => usuarios.filter(u => u.tipo === tipo))
+    );
   }
 
   // Obtener un usuario por ID
