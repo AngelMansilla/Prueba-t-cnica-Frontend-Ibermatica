@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { UsuarioService } from './usuario.service';
 import { MockDataService } from './mock-data.service';
-import { TipoUsuario, CrearUsuarioDTO } from '../models';
+import { TipoUsuario, CrearUsuarioDTO, Usuario } from '../models';
 import { of } from 'rxjs';
 
 describe('UsuarioService', () => {
@@ -44,9 +44,9 @@ describe('UsuarioService', () => {
 
     describe('getUsuariosPorTipo', () => {
         it('debe filtrar los usuarios por tipo correctamente', (done) => {
-            const mockUsuarios = [
-                { id: '1', tipo: 'DEMANDANTE' as TipoUsuario, nif: '12345678A', nombre: 'Juan', primerApellido: 'G', segundoApellido: 'L', genero: 'M', fechaNacimiento: '1990-01-01' },
-                { id: '2', tipo: 'EMPLEADO' as TipoUsuario, nif: '87654321B', nombre: 'Maria', primerApellido: 'R', segundoApellido: 'M', genero: 'F', fechaNacimiento: '1985-01-01' }
+            const mockUsuarios: Usuario[] = [
+                { id: '1', tipo: 'DEMANDANTE', nif: '12345678A', nombre: 'Juan', primerApellido: 'G', segundoApellido: 'L', genero: 'M', fechaNacimiento: '1990-01-01' },
+                { id: '2', tipo: 'EMPLEADO', nif: '87654321B', nombre: 'Maria', primerApellido: 'R', segundoApellido: 'M', genero: 'F', fechaNacimiento: '1985-01-01' }
             ];
             mockDataService.getUsuarios.and.returnValue(of(mockUsuarios));
 
